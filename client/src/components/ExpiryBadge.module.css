@@ -1,0 +1,54 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-body);
+  font-weight: 600;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Sizes */
+.md {
+  font-size: 12px;
+  padding: 3px 10px 3px 8px;
+}
+
+.sm {
+  font-size: 11px;
+  padding: 2px 8px 2px 6px;
+}
+
+/* Status: fresh */
+.fresh {
+  color: var(--color-fresh);
+  background: var(--color-fresh-bg);
+}
+.fresh .dot {
+  background: var(--color-fresh);
+}
+
+/* Status: soon */
+.soon {
+  color: var(--color-soon);
+  background: var(--color-soon-bg);
+}
+.soon .dot {
+  background: var(--color-soon);
+}
+
+/* Status: expired */
+.expired {
+  color: var(--color-expired);
+  background: var(--color-expired-bg);
+}
+.expired .dot {
+  background: var(--color-expired);
+}
