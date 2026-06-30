@@ -1,28 +1,34 @@
+import { useEffect, useState } from 'react';
 import PantryItem from '../components/PantryItem';
+import { pantryAPI } from '../api/api';
 import styles from './Dashboard.module.css';
 
-// Sample data — replace with API call once server routes exist
-const sampleItems = [
-  { id: 1, name: 'Curd', quantity: 1, unit: 'cup', category: 'Dairy', expiryDate: daysFromNow(-1) },
-  { id: 2, name: 'Bread', quantity: 0.5, unit: 'loaf', category: 'Bakery', expiryDate: daysFromNow(2) },
-  { id: 3, name: 'Milk', quantity: 500, unit: 'ml', category: 'Dairy', expiryDate: daysFromNow(3) },
-  { id: 4, name: 'Rice', quantity: 2, unit: 'kg', category: 'Grains', expiryDate: daysFromNow(120) },
-  { id: 5, name: 'Onions', quantity: 1.2, unit: 'kg', category: 'Produce', expiryDate: daysFromNow(30) },
-];
+export default function Dashboard({goToPantry}) {
+  const [items, setItems] = useState([]);
+  const [summary, setSummary] = useState({ total: 0, expiringSoon: 0, expired: 0 });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-function daysFromNow(n) {
-  const d = new Date();
-  d.setDate(d.getDate() + n);
-  return d.toISOString();
-}
+  useEffect(() => {
+    async function load() {
+      try {
+        const [itemsData, summaryData] = await Promise.all([
+          pantryAPI.getAll(),
+          pantryAPI.getSummary(),
+        ]);
+        setItems(itemsData);
+        setSummary(summaryData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
 
-export default function Dashboard() {
-  const total = sampleItems.length;
-  const expired = sampleItems.filter((i) => new Date(i.expiryDate) < new Date()).length;
-  const expiringSoon = sampleItems.filter((i) => {
-    const days = Math.round((new Date(i.expiryDate) - new Date()) / 86400000);
-    return days >= 0 && days <= 3;
-  }).length;
+  if (loading) return <p style={{ padding: '2rem' }}>Loading...</p>;
+  if (error)   return <p style={{ padding: '2rem', color: 'red' }}>{error}</p>;
 
   return (
     <div className={styles.page}>
@@ -32,17 +38,19 @@ export default function Dashboard() {
       </header>
 
       <div className={styles.stats}>
-        <StatCard label="Total items" value={total} />
-        <StatCard label="Expiring" value={expiringSoon} tone="soon" />
-        <StatCard label="Expired" value={expired} tone="expired" />
+        <StatCard label="Total items"  value={summary.total}       />
+        <StatCard label="Expiring"     value={summary.expiringSoon} tone="soon"    />
+        <StatCard label="Expired"      value={summary.expired}      tone="expired" />
       </div>
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>At a glance</h2>
         <div className={styles.list}>
-          {sampleItems.map((item) => (
-            <PantryItem key={item.id} item={item} />
-          ))}
+          {items.length === 0 ? (
+            <p className={styles.empty}>No items yet. Add something to your pantry!</p>
+          ) : (
+            items.map((item) => <PantryItem key={item._id} item={item} onEdit={goToPantry} onDelete={goToPantry} />)
+          )}
         </div>
       </section>
     </div>

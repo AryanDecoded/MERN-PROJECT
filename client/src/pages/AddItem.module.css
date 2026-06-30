@@ -85,3 +85,14 @@
     grid-template-columns: 1fr;
   }
 }
+
+.error {
+  color: #c0392b;
+  font-size: 0.85rem;
+}
+
+.success {
+  color: #2d6a4f;
+  font-size: 0.85rem;
+  font-weight: 600;
+}

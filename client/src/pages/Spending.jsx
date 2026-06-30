@@ -1,23 +1,48 @@
+import { useEffect, useState } from 'react';
+import { spendingAPI } from '../api/api';
 import styles from './Spending.module.css';
 
-const sampleMembers = [
-  { id: 1, name: 'You', spent: 1240 },
-  { id: 2, name: 'Roommate', spent: 860 },
-];
-
-const sampleLog = [
-  { id: 1, item: 'Rice', amount: 240, member: 'You', date: '2026-06-12' },
-  { id: 2, item: 'Milk', amount: 60, member: 'Roommate', date: '2026-06-14' },
-  { id: 3, item: 'Onions', amount: 90, member: 'You', date: '2026-06-15' },
-];
-
 export default function Spending() {
-  const total = sampleMembers.reduce((sum, m) => sum + m.spent, 0);
+  const [breakdown, setBreakdown] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteMsg, setInviteMsg] = useState('');
 
-  function handleExport() {
-    // TODO: generate CSV from spending log once server route exists
-    console.log('Export CSV');
+  useEffect(() => {
+    spendingAPI.getBreakdown()
+      .then(setBreakdown)
+      .finally(() => setLoading(false));
+  }, []);
+
+  async function handleExport() {
+    try {
+      const res = await spendingAPI.exportCSV();
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'spending.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      alert('Export failed: ' + err.message);
+    }
   }
+
+  async function handleInvite(e) {
+    e.preventDefault();
+    try {
+      const data = await spendingAPI.invite(inviteEmail);
+      setInviteMsg(data.message);
+      setInviteEmail('');
+    } catch (err) {
+      setInviteMsg('Error: ' + err.message);
+    }
+  }
+
+  const total = breakdown.reduce((sum, m) => sum + m.total, 0);
+
+  if (loading) return <p style={{ padding: '2rem' }}>Loading...</p>;
 
   return (
     <div className={styles.page}>
@@ -39,28 +64,23 @@ export default function Spending() {
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>By member</h2>
         <div className={styles.members}>
-          {sampleMembers.map((m) => (
-            <div key={m.id} className={styles.memberRow}>
+          {breakdown.map((m) => (
+            <div key={m.memberId} className={styles.memberRow}>
               <span className={styles.memberName}>{m.name}</span>
-              <span className={styles.memberAmount}>₹{m.spent.toLocaleString('en-IN')}</span>
+              <span className={styles.memberAmount}>₹{m.total.toLocaleString('en-IN')}</span>
             </div>
           ))}
         </div>
       </section>
 
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Recent purchases</h2>
-        <div className={styles.log}>
-          {sampleLog.map((entry) => (
-            <div key={entry.id} className={styles.logRow}>
-              <div>
-                <p className={styles.logItem}>{entry.item}</p>
-                <p className={styles.logMeta}>{entry.member} · {entry.date}</p>
-              </div>
-              <span className={styles.logAmount}>₹{entry.amount}</span>
-            </div>
-          ))}
-        </div>
+        <h2 className={styles.sectionTitle}>Invite a household member</h2>
+        <form className={styles.inviteForm} onSubmit={handleInvite}>
+          <input type="email" placeholder="their@email.com" value={inviteEmail}
+            onChange={(e) => setInviteEmail(e.target.value)} className={styles.inviteInput} required />
+          <button type="submit" className={styles.inviteBtn}>Invite</button>
+        </form>
+        {inviteMsg && <p style={{ marginTop: '0.5rem', color: '#2d6a4f' }}>{inviteMsg}</p>}
       </section>
     </div>
   );
