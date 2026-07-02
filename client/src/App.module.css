@@ -1,69 +1,106 @@
 .app {
   min-height: 100vh;
-  background: var(--color-bg);
+  background: #2b120c;
+  color: #fff;
+  background-image:url('bg1.jpeg');
+  background-size: cover;
 }
 
 .navbar {
+  width: calc(100% - 80px);
+  margin: 18px auto;
+  padding: 18px 40px;
+
   display: flex;
   align-items: center;
-  gap: var(--space-5);
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-  padding: var(--space-3) var(--space-5);
+  justify-content: space-between;
+
+  background: #f7f1e6;
+  border-radius: 28px;
+
   position: sticky;
-  top: 0;
-  z-index: 10;
+  top: 16px;
+  z-index: 100;
+
+  box-shadow:
+    0 10px 35px rgba(0,0,0,.12);
 }
 
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 34px;
+  font-weight: 800;
+  color: #e56a2c;
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 17px;
-  color: var(--color-fresh);
-  white-space: nowrap;
 }
 
 .navLinks {
   display: flex;
-  gap: var(--space-1);
-  flex: 1;
-  overflow-x: auto;
+  align-items: center;
+  gap: 18px;
 }
 
 .navLink {
-  background: none;
   border: none;
-  color: var(--color-text-muted);
-  font-size: 13px;
-  font-weight: 600;
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-sm);
+  background: transparent;
+
+  padding: 12px 24px;
+
+  border-radius: 999px;
+
   cursor: pointer;
-  white-space: nowrap;
+
+  font-size: 18px;
+  font-weight: 700;
+
+  color: #182220;
+
+  transition: .25s;
 }
 
 .navLink:hover {
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: rgba(229,106,44,.12);
 }
 
 .navLinkActive {
-  background: var(--color-fresh-bg);
-  color: var(--color-fresh);
+  background: #e56a2c;
+  color: white;
 }
 
 .main {
-  min-height: calc(100vh - 60px);
+  width: min(1200px, 92%);
+  margin: 0 auto;
+  padding: 40px 0 70px;
 }
 
-@media (max-width: 720px) {
-  .navbar {
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    padding: var(--space-3);
-  }
-  .navLinks {
-    order: 3;
-    width: 100%;
-  }
+@media (max-width:900px){
+
+.navbar{
+    width:95%;
+    flex-wrap:wrap;
+    padding:20px;
+}
+
+.brand{
+    font-size:28px;
+}
+
+.navLinks{
+    width:100%;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+
+.navLink{
+    font-size:16px;
+    padding:10px 18px;
+}
+
+.main{
+    width:95%;
+}
+
 }

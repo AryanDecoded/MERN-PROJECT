@@ -33,7 +33,7 @@ export default function Auth() {
   return (
     <div className={styles.page}>
       <div className={styles.card}>
-        <h1 className={styles.brand}>🌿 Pantry Tracker</h1>
+        <h1 className={styles.brand}>🌿PantryPal </h1>
         <p className={styles.tagline}>Keep your shelves smart.</p>
 
         <div className={styles.tabs}>

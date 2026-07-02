@@ -33,7 +33,7 @@ function AppShell() {
   return (
     <div className={styles.app}>
       <nav className={styles.navbar}>
-        <span className={styles.brand}>🌿 Pantry Tracker</span>
+        <span className={styles.brand}>🌿 PantryPal</span>
 
         <div className={styles.navLinks}>
           {Object.entries(PAGES).map(([key, { label }]) => (

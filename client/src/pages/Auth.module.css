@@ -3,12 +3,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg, #f6f8f3);
+  background-image: url('Authbackdrop.png');
+  background-size:cover;
   padding: 1rem;
 }
 
 .card {
-  background: white;
+  background: rgb(249, 236, 187);
   border-radius: 16px;
   padding: 2.5rem 2rem;
   width: 100%;
@@ -24,7 +25,7 @@
 }
 
 .tagline {
-  color: #888;
+  color: #3d2121;
   margin: 0 0 1.5rem;
   font-size: 0.9rem;
 }
@@ -52,7 +53,7 @@
 
 .tabActive {
   background: white;
-  color: #2d6a4f;
+  color: #341c1e;
   font-weight: 600;
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
@@ -83,7 +84,7 @@
 }
 
 .field input:focus {
-  border-color: #2d6a4f;
+  border-color: #392024;
 }
 
 .error {
@@ -96,7 +97,7 @@
 .submitBtn {
   margin-top: 0.5rem;
   padding: 0.75rem;
-  background: #2d6a4f;
+  background: #3b1f22;
   color: white;
   border: none;
   border-radius: 8px;
@@ -107,7 +108,7 @@
 }
 
 .submitBtn:hover:not(:disabled) {
-  background: #1b4332;
+  background: #31181d;
 }
 
 .submitBtn:disabled {

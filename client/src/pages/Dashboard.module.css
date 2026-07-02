@@ -8,10 +8,12 @@
 }
 
 .header h1 {
+  color:antiquewhite;
   font-size: 28px;
 }
 
 .subtitle {
+  color:antiquewhite;
   margin: var(--space-1) 0 0;
   color: var(--color-text-muted);
   font-size: 14px;
@@ -59,6 +61,7 @@
 }
 
 .sectionTitle {
+  color:antiquewhite;
   font-size: 18px;
 }
 
